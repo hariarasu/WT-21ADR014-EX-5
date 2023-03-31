@@ -1,0 +1,29 @@
+# WT-21ADR014-EX-5
+const http = require('http');
+const fs = require('fs');
+const url = require('url');
+
+http.createServer((req, res) => {
+    if (req.url === '/') {
+        res.write('Hai');
+        res.end();
+    }
+    if (req.url === '/contact') {
+        res.write('<html><body><p>Contact:985674121</p></body></html>');
+        res.end();
+    }
+    if (req.url === '/search') {
+        fs.readFile('2.add.html', (err, data) => {
+            res.write(data);
+            res.end();
+        })
+    }
+
+    if (url.parse(req.url, true).pathname === '/add') {
+        const query = url.parse(req.url, true).query;
+        console.log(query);
+        var sum = Number(query.n1) + Number(query.n2);
+        res.write(`${sum}`);
+        res.end();
+    }
+}).listen(1234);
